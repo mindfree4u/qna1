@@ -1,5 +1,4 @@
 // Firebase 초기화 확인
-// 삭제버튼 추가
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof firebase === 'undefined') {
         console.error('Firebase SDK가 로드되지 않았습니다.');
@@ -88,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         questionsList.innerHTML = '';
         
         questionsRef.orderBy('date', 'desc').onSnapshot((snapshot) => {
+            // 문서 변경 사항 처리
             snapshot.docChanges().forEach((change) => {
                 if (change.type === 'added') {
                     const question = change.doc.data();
@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     const questionElement = document.createElement('div');
                     questionElement.className = 'question-item';
+                    questionElement.id = `question-${questionId}`;
                     questionElement.innerHTML = `
                         <div class="question-header">
                             <h3>${question.title}</h3>
@@ -123,6 +124,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
                     
                     questionsList.appendChild(questionElement);
+                } else if (change.type === 'removed') {
+                    // 문서가 삭제된 경우 해당 요소를 DOM에서 제거
+                    const questionId = change.doc.id;
+                    const questionElement = document.getElementById(`question-${questionId}`);
+                    if (questionElement) {
+                        questionElement.remove();
+                    }
                 }
             });
         }, (error) => {
