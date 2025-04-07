@@ -128,14 +128,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
+            // 클라이언트 시간으로 먼저 답변 추가
             const newAnswer = {
                 content,
-                date: firebase.firestore.FieldValue.serverTimestamp(),
+                date: new Date(),
                 userName: '익명 사용자'
             };
             
+            // 먼저 클라이언트 시간으로 답변 추가
             await questionRef.update({
                 answers: firebase.firestore.FieldValue.arrayUnion(newAnswer)
+            });
+
+            // 서버 타임스탬프로 업데이트
+            const question = questionDoc.data();
+            const answers = question.answers || [];
+            const updatedAnswers = answers.map(answer => {
+                if (answer.content === content && answer.userName === '익명 사용자') {
+                    return {
+                        ...answer,
+                        date: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                }
+                return answer;
+            });
+
+            await questionRef.update({
+                answers: updatedAnswers
             });
         } catch (error) {
             console.error("Error adding answer: ", error);
