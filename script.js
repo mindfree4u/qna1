@@ -119,12 +119,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                         <div class="question-content">${question.content}</div>
                         <div class="answers-list">
-                            ${question.answers ? question.answers.map(answer => `
+                            ${question.answers ? question.answers.map((answer, index) => `
                                 <div class="answer-item">
                                     <p>${answer.content}</p>
                                     <small>작성자: ${answer.userName} | 작성일: ${answer.date ? answer.date.toDate().toLocaleString() : '방금'}</small>
                                 </div>
-                            `).join('') : ''}
+                            `).join('') : '<p class="no-answers">아직 답변이 없습니다.</p>'}
                         </div>
                         <div class="answer-form" data-question-id="${questionId}">
                             <textarea placeholder="답변을 작성하세요"></textarea>
