@@ -120,15 +120,35 @@ button:hover {
 }
 
 .answers-list {
-    margin-top: 15px;
-    padding-left: 20px;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
 }
 
 .answer-item {
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 4px;
+    padding: 10px;
     margin-bottom: 10px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.answer-item p {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.answer-item small {
+    color: #666;
+    font-size: 12px;
+}
+
+.no-answers {
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    padding: 10px;
 }
 
 .navbar {
@@ -176,6 +196,7 @@ button:hover {
 .nav-links a.active {
     color: #3498db;
 }
+
 .nav-links a.active::after {
     content: '';
     position: absolute;
