@@ -131,16 +131,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const question = questionDoc.data();
             const currentAnswers = question.answers || [];
             
-            // 새 답변 추가
+            // 새 답변 객체 생성
             const newAnswer = {
-                content,
+                content: content.trim(),
                 date: new Date(),
                 userName: '익명 사용자'
             };
             
-            // 전체 답변 배열 업데이트
+            // 답변 배열 업데이트
+            const updatedAnswers = [...currentAnswers, newAnswer];
+            
+            // Firestore 문서 업데이트
             await questionRef.update({
-                answers: [...currentAnswers, newAnswer]
+                answers: updatedAnswers
             });
             
             // 답변 입력창 초기화
@@ -148,6 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (textarea) {
                 textarea.value = '';
             }
+            
+            console.log('답변이 성공적으로 등록되었습니다.');
         } catch (error) {
             console.error("Error adding answer: ", error);
             alert("답변 등록 중 오류가 발생했습니다.");
