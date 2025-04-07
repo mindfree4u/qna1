@@ -1,4 +1,5 @@
 // Firebase 초기화 확인
+// 삭제버튼 추가
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof firebase === 'undefined') {
         console.error('Firebase SDK가 로드되지 않았습니다.');
