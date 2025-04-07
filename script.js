@@ -128,17 +128,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            const question = questionDoc.data();
-            const answers = question.answers || [];
-            
-            answers.push({
+            const newAnswer = {
                 content,
                 date: firebase.firestore.FieldValue.serverTimestamp(),
                 userName: '익명 사용자'
-            });
+            };
             
             await questionRef.update({
-                answers: answers
+                answers: firebase.firestore.FieldValue.arrayUnion(newAnswer)
             });
         } catch (error) {
             console.error("Error adding answer: ", error);
