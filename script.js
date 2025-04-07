@@ -62,6 +62,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // 질문 삭제 함수
+    window.deleteQuestion = async function(questionId) {
+        if (!confirm('정말로 이 질문과 모든 답변을 삭제하시겠습니까?')) {
+            return;
+        }
+        
+        try {
+            await questionsRef.doc(questionId).delete();
+            console.log('질문이 성공적으로 삭제되었습니다.');
+        } catch (error) {
+            console.error("Error deleting question: ", error);
+            alert("질문 삭제 중 오류가 발생했습니다.");
+        }
+    };
+
     // 질문 목록 업데이트 함수
     function updateQuestionsList() {
         if (!questionsList) {
@@ -80,7 +95,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     const questionElement = document.createElement('div');
                     questionElement.className = 'question-item';
                     questionElement.innerHTML = `
-                        <h3>${question.title}</h3>
+                        <div class="question-header">
+                            <h3>${question.title}</h3>
+                            <button onclick="deleteQuestion('${questionId}')" class="delete-btn">삭제</button>
+                        </div>
                         <div class="question-meta">
                             <span>교과목: ${question.subject}</span>
                             <span> | </span>
