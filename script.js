@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                             `).join('') : ''}
                         </div>
-                        <div class="answer-form">
+                        <div class="answer-form" data-question-id="${questionId}">
                             <textarea placeholder="답변을 작성하세요"></textarea>
                             <button onclick="addAnswer('${questionId}', this.previousElementSibling.value)">답변 등록</button>
                         </div>
@@ -128,34 +128,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // 클라이언트 시간으로 먼저 답변 추가
+            const question = questionDoc.data();
+            const currentAnswers = question.answers || [];
+            
+            // 새 답변 추가
             const newAnswer = {
                 content,
                 date: new Date(),
                 userName: '익명 사용자'
             };
             
-            // 먼저 클라이언트 시간으로 답변 추가
+            // 전체 답변 배열 업데이트
             await questionRef.update({
-                answers: firebase.firestore.FieldValue.arrayUnion(newAnswer)
+                answers: [...currentAnswers, newAnswer]
             });
-
-            // 서버 타임스탬프로 업데이트
-            const question = questionDoc.data();
-            const answers = question.answers || [];
-            const updatedAnswers = answers.map(answer => {
-                if (answer.content === content && answer.userName === '익명 사용자') {
-                    return {
-                        ...answer,
-                        date: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-                }
-                return answer;
-            });
-
-            await questionRef.update({
-                answers: updatedAnswers
-            });
+            
+            // 답변 입력창 초기화
+            const textarea = document.querySelector(`[data-question-id="${questionId}"] textarea`);
+            if (textarea) {
+                textarea.value = '';
+            }
         } catch (error) {
             console.error("Error adding answer: ", error);
             alert("답변 등록 중 오류가 발생했습니다.");
