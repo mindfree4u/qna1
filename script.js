@@ -69,11 +69,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
+            // 먼저 DOM에서 요소 제거
+            const questionElement = document.getElementById(`question-${questionId}`);
+            if (questionElement) {
+                questionElement.remove();
+            }
+            
+            // 그 다음 Firestore에서 문서 삭제
             await questionsRef.doc(questionId).delete();
             console.log('질문이 성공적으로 삭제되었습니다.');
         } catch (error) {
             console.error("Error deleting question: ", error);
             alert("질문 삭제 중 오류가 발생했습니다.");
+            // 오류 발생 시 화면을 다시 로드
+            updateQuestionsList();
         }
     };
 
