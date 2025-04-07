@@ -5,10 +5,7 @@ if (typeof firebase === 'undefined') {
     console.error('Firebase가 초기화되지 않았습니다.');
 } else {
     // DOM이 완전히 로드된 후 실행
-    window.addEventListener('load', function() {
-        // Firestore 컬렉션 참조
-        const questionsRef = db.collection('questions');
-
+    document.addEventListener('DOMContentLoaded', function() {
         // DOM 요소
         const questionForm = document.getElementById('questionForm');
         const questionsList = document.getElementById('questionsList');
@@ -121,6 +118,9 @@ if (typeof firebase === 'undefined') {
             console.error('Required DOM elements not found');
             return;
         }
+
+        // Firestore 컬렉션 참조
+        const questionsRef = db.collection('questions');
 
         // 질문 폼 제출 이벤트 리스너
         questionForm.addEventListener('submit', async function(e) {
