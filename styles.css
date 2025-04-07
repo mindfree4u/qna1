@@ -176,7 +176,6 @@ button:hover {
 .nav-links a.active {
     color: #3498db;
 }
-
 .nav-links a.active::after {
     content: '';
     position: absolute;
