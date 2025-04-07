@@ -188,6 +188,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 textarea.value = '';
             }
             
+            // 답변 목록에 새 답변 추가
+            const answersList = document.querySelector(`#question-${questionId} .answers-list`);
+            if (answersList) {
+                const answerElement = document.createElement('div');
+                answerElement.className = 'answer-item';
+                answerElement.innerHTML = `
+                    <p>${newAnswer.content}</p>
+                    <small>작성자: ${newAnswer.userName} | 작성일: ${newAnswer.date.toLocaleString()}</small>
+                `;
+                answersList.appendChild(answerElement);
+            }
+            
             console.log('답변이 성공적으로 등록되었습니다.');
         } catch (error) {
             console.error("Error adding answer: ", error);
